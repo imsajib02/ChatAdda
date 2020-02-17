@@ -7,3 +7,7 @@ A chatting **Flutter** app for both Android and iOS. The development of this pro
 * **Realtime update**
 
 ## Snapshots:
+|  |  |  |  |
+|---|---|---|---|
+| ![](Snapshots/1.png) | ![](Snapshots/2.png) | ![](Snapshots/3.png) | ![](Snapshots/4.png) |
+| ![](Snapshots/5.png) | ![](Snapshots/6.png) | ![](Snapshots/7.png) | ![](Snapshots/8.png) |
