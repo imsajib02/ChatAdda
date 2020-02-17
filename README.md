@@ -9,5 +9,5 @@ A chatting **Flutter** app for both Android and iOS. The development of this pro
 ## Snapshots:
 |  |  |  |
 |---|---|---|
-| ![](/Snapshots/1.jpg) | ![](/Snapshots/2.jpg) | ![](/Snapshots/3.jpg) |
+| ![](/Snapshots/1.jpg) | ![](/Snapshots/2.jpg) | ![](/Snapshots/3-1.jpg) |
 | ![](/Snapshots/4.jpg) | ![](/Snapshots/5.jpg) | ![](/Snapshots/6.jpg) |
