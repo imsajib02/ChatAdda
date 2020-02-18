@@ -44,7 +44,7 @@ class ChatState extends State<ChatScreen> with TickerProviderStateMixin {
 
                 case _logout: {
 
-                  MyClass.SignOutofGoogle();
+                  MyClass.SignOutofGoogle(context);
                   dispose();
                 } break;
 
@@ -77,19 +77,19 @@ class ChatState extends State<ChatScreen> with TickerProviderStateMixin {
 
     if(text.isNotEmpty) {
 
-      ReceivedMessage message = ReceivedMessage(
-        text: text,
-        animationController: AnimationController(
-          duration: Duration(milliseconds: 700),
-          vsync: this,
-        ),
-      );
-
-      setState(() {
-        MyClass.messages.insert(0, message);
-      });
-
-      message.animationController.forward();
+//      ReceivedMessage message = ReceivedMessage(
+//        text: text,
+//        animationController: AnimationController(
+//          duration: Duration(milliseconds: 700),
+//          vsync: this,
+//        ),
+//      );
+//
+//      setState(() {
+//        MyClass.messages.insert(0, message);
+//      });
+//
+//      message.animationController.forward();
 
       ChatMessage message1 = ChatMessage(
         text: text,
@@ -110,8 +110,17 @@ class ChatState extends State<ChatScreen> with TickerProviderStateMixin {
   @override
   void dispose() {
 
-    for (ReceivedMessage message in MyClass.messages) {
-      message.animationController.dispose();
+    try {
+      for (ChatMessage message in MyClass.messages) {
+
+        if(message != null) {
+          message.animationController.dispose();
+          break;
+        }
+      }
+    } on Exception catch (e) {
+
+      print(e);
     }
 
     super.dispose();

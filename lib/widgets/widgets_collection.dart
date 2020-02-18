@@ -32,7 +32,7 @@ class SplashWidget extends StatelessWidget {
             ),
           ),
           loaderColor: Colors.lightBlueAccent,
-          navigateAfterSeconds: ChatScreen(),
+          navigateAfterSeconds: Login(),
         )
     );
   }
@@ -242,9 +242,9 @@ class ChatMessage extends StatelessWidget {
               crossAxisAlignment: CrossAxisAlignment.end,
 
               children: <Widget>[
-                //Text(MyClass.loggeduser.userName, style: Theme.of(context).textTheme.subhead),
                 Container(
-                    child: Text("Sajib", style: Theme.of(context).textTheme.caption),
+                    child: Text(MyClass.loggeduser.userName, style: Theme.of(context).textTheme.caption),
+                    //child: Text("Sajib", style: Theme.of(context).textTheme.caption),
                   margin: const EdgeInsets.only(right: 5, top: 5),
                 ),
 
@@ -270,8 +270,8 @@ class ChatMessage extends StatelessWidget {
               margin: const EdgeInsets.only(right: 6.0, left: 12.0),
 
               child: CircleAvatar(
-                //backgroundImage: NetworkImage(MyClass.loggeduser.photoUrl)),
-                  child: Icon(Icons.account_circle, color: Colors.lightBlueAccent,)),
+                backgroundImage: NetworkImage(MyClass.loggeduser.photoUrl)),
+                  //child: Icon(Icons.account_circle, color: Colors.lightBlueAccent,)),
             ),
           ],
         ),
@@ -320,7 +320,7 @@ class ReceivedMessage extends StatelessWidget {
               children: <Widget>[
                 //Text(MyClass.loggeduser.userName, style: Theme.of(context).textTheme.subhead),
                 Container(
-                  child: Text("Sajib", style: Theme.of(context).textTheme.caption),
+                  child: Text("Her", style: Theme.of(context).textTheme.caption),
                   margin: const EdgeInsets.only(left: 5, top: 5),
                 ),
 

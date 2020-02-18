@@ -5,6 +5,7 @@ import 'package:google_sign_in/google_sign_in.dart';
 import 'package:flutter_progress_dialog/flutter_progress_dialog.dart';
 import 'package:flushbar/flushbar.dart';
 import 'package:chatadda/widgets/widgets_collection.dart';
+import 'package:chatadda/pages/chat_screen.dart';
 
 class MyClass {
 
@@ -41,7 +42,7 @@ class MyClass {
 
   static void GoogleLogin(BuildContext context)
   {
-    SignOutofGoogle();
+    //SignOutofGoogle(context);
 
     try {
       googleSignIn.signIn().then((result){
@@ -60,7 +61,9 @@ class MyClass {
 
               dialog.dismiss();
               loggeduser = new UserDetails(user.user.displayName, user.user.email, user.user.photoUrl);
-              print(loggeduser.userName);
+              print(loggeduser.getUserName());
+
+              NavigateTo(context, ChatScreen());
             }
 
           }).catchError((error) {
@@ -93,15 +96,24 @@ class MyClass {
 
       print('Try-Catch: $error');
 
-      snack_msg = 'Some error occured. Try again.';
-      DisplayErrorSnack(context, snack_msg);
+      //snack_msg = 'Some error occured. Try again.';
+      //DisplayErrorSnack(context, snack_msg);
     }
 
   }
 
-  static void SignOutofGoogle()
+  static void SignOutofGoogle(BuildContext context)
   {
     googleSignIn.signOut();
+    Navigator.pop(context);
+  }
+
+  static void NavigateTo(BuildContext context, Widget route) {
+
+    Navigator.push(
+      context,
+      MaterialPageRoute(builder: (context) => route),
+    );
   }
 }
 
