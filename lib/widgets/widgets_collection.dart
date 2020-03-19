@@ -215,10 +215,14 @@ class ChatWidgetState extends State<ChatWidget> with TickerProviderStateMixin {
 
 class ChatMessage extends StatelessWidget {
 
+  final String name;
+  final String photouri;
   final String text;
   final AnimationController animationController;
 
   ChatMessage( {
+    this.name,
+    this.photouri,
     this.text,
     this.animationController,
   });
@@ -243,7 +247,7 @@ class ChatMessage extends StatelessWidget {
 
               children: <Widget>[
                 Container(
-                    child: Text(MyClass.loggeduser.userName, style: Theme.of(context).textTheme.caption),
+                    child: Text(name, style: Theme.of(context).textTheme.caption),
                     //child: Text("Sajib", style: Theme.of(context).textTheme.caption),
                   margin: const EdgeInsets.only(right: 5, top: 5),
                 ),
@@ -270,7 +274,7 @@ class ChatMessage extends StatelessWidget {
               margin: const EdgeInsets.only(right: 6.0, left: 12.0),
 
               child: CircleAvatar(
-                backgroundImage: NetworkImage(MyClass.loggeduser.photoUrl)),
+                backgroundImage: NetworkImage(photouri)),
                   //child: Icon(Icons.account_circle, color: Colors.lightBlueAccent,)),
             ),
           ],
@@ -283,10 +287,14 @@ class ChatMessage extends StatelessWidget {
 
 class ReceivedMessage extends StatelessWidget {
 
+  final String name;
+  final String photouri;
   final String text;
   final AnimationController animationController;
 
   ReceivedMessage( {
+    this.name,
+    this.photouri,
     this.text,
     this.animationController,
   });
@@ -311,8 +319,8 @@ class ReceivedMessage extends StatelessWidget {
               margin: const EdgeInsets.only(right: 12.0, left: 6.0),
 
               child: CircleAvatar(
-                //backgroundImage: NetworkImage(MyClass.loggeduser.photoUrl)),
-                  child: Icon(Icons.account_circle, color: Colors.lightBlueAccent,)),
+                backgroundImage: NetworkImage(photouri)),
+                  //child: Icon(Icons.account_circle, color: Colors.lightBlueAccent,)),
             ),
             Column(
               crossAxisAlignment: CrossAxisAlignment.start,
@@ -320,7 +328,7 @@ class ReceivedMessage extends StatelessWidget {
               children: <Widget>[
                 //Text(MyClass.loggeduser.userName, style: Theme.of(context).textTheme.subhead),
                 Container(
-                  child: Text("Her", style: Theme.of(context).textTheme.caption),
+                  child: Text(name, style: Theme.of(context).textTheme.caption),
                   margin: const EdgeInsets.only(left: 5, top: 5),
                 ),
 

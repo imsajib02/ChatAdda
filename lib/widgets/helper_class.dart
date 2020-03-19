@@ -88,16 +88,16 @@ class MyClass {
 
         print('Sign-in: $error');
 
-        snack_msg = 'Some error occured. Try again.';
-        DisplayErrorSnack(context, snack_msg);
+//        snack_msg = 'Some error occured. Try again.';
+//        DisplayErrorSnack(context, snack_msg);
       });
 
     } catch(error) {
 
       print('Try-Catch: $error');
 
-      //snack_msg = 'Some error occured. Try again.';
-      //DisplayErrorSnack(context, snack_msg);
+      snack_msg = 'Some error occured. Try again.';
+      DisplayErrorSnack(context, snack_msg);
     }
 
   }

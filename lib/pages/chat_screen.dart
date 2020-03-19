@@ -1,8 +1,12 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 
 import 'package:chatadda/resources/strings.dart';
 import 'package:chatadda/widgets/widgets_collection.dart';
 import 'package:chatadda/widgets/helper_class.dart';
+import 'package:firebase_database/firebase_database.dart';
+import 'package:firebase_database/ui/firebase_animated_list.dart';
 
 class ChatScreen extends StatefulWidget {
 
@@ -15,6 +19,19 @@ class ChatScreen extends StatefulWidget {
 class ChatState extends State<ChatScreen> with TickerProviderStateMixin {
 
   static const int _logout = 303;
+  DatabaseReference _databaseReference = FirebaseDatabase.instance.reference().child(Strings.databaseRootPath);
+
+  //StreamSubscription <Event> onMessageAdded;
+
+  @override
+  void initState() {
+    super.initState();
+//    onMessageAdded = _databaseReference.limitToLast(1).onChildAdded.listen((data) {
+//
+//      _onEntryAdded(data);
+//    });
+//    _databaseReference.onChildAdded.listen(_onEntryAdded);
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -61,11 +78,53 @@ class ChatState extends State<ChatScreen> with TickerProviderStateMixin {
 
         children: <Widget>[
 
-          Flexible(child: ListView.builder(
+          Flexible(child: FirebaseAnimatedList(
+              query: _databaseReference,
               padding: new EdgeInsets.all(8.0),
               reverse: true,
-              itemBuilder: (_, int index) => MyClass.messages[index],
-              itemCount: MyClass.messages.length)),
+              sort: (a, b) => b.key.compareTo(a.key),
+              itemBuilder: (_, DataSnapshot messageSnapshot, Animation<double> animation, length) {
+
+                if (messageSnapshot.value["userName"] == MyClass.loggeduser.userName) {
+
+                  ChatMessage message1 = ChatMessage(
+                    name: messageSnapshot.value["userName"],
+                    photouri: messageSnapshot.value["photoUri"],
+                    text: messageSnapshot.value["message"],
+                    animationController: AnimationController(
+                      duration: Duration(milliseconds: 700),
+                      vsync: this,
+                    ),
+                  );
+
+                  message1.animationController.forward();
+
+                  return message1;
+                }
+                else {
+
+                  ReceivedMessage message = ReceivedMessage(
+                    name: messageSnapshot.value["userName"],
+                    photouri: messageSnapshot.value["photoUri"],
+                    text: messageSnapshot.value["message"],
+                    animationController: AnimationController(
+                      duration: Duration(milliseconds: 700),
+                      vsync: this,
+                    ),
+                  );
+
+                  message.animationController.forward();
+
+                  return message;
+                }
+              }
+          )),
+
+//          Flexible(child: ListView.builder(
+//              padding: new EdgeInsets.all(8.0),
+//              reverse: true,
+//              itemBuilder: (_, int index) => MyClass.messages[index],
+//              itemCount: MyClass.messages.length)),
           Container(
               child: ChatWidget()),
         ],
@@ -91,8 +150,49 @@ class ChatState extends State<ChatScreen> with TickerProviderStateMixin {
 //
 //      message.animationController.forward();
 
+      _databaseReference.push().set(toJson(text)).then((value) {
+
+      }).catchError((error) {
+        print('Firebase: $error');
+
+        MyClass.snack_msg = 'Message sending failed. Try again.';
+        MyClass.DisplayErrorSnack(context, MyClass.snack_msg);
+      });
+
+//      ChatMessage message1 = ChatMessage(
+//        text: text,
+//        animationController: AnimationController(
+//          duration: Duration(milliseconds: 700),
+//          vsync: this,
+//        ),
+//      );
+//
+//      setState(() {
+//        MyClass.messages.insert(0, message1);
+//      });
+//
+//      message1.animationController.forward();
+    }
+  }
+
+  toJson(String msg) {
+
+    return {
+
+      "userName" : MyClass.loggeduser.userName,
+      "photoUri" : MyClass.loggeduser.photoUrl,
+      "message" : msg,
+    };
+  }
+
+  _onEntryAdded(Event event) {
+
+    if(event.snapshot.value["userName"] == MyClass.loggeduser.userName) {
+
       ChatMessage message1 = ChatMessage(
-        text: text,
+        name: event.snapshot.value["userName"],
+        photouri: event.snapshot.value["photoUri"],
+        text: event.snapshot.value["message"],
         animationController: AnimationController(
           duration: Duration(milliseconds: 700),
           vsync: this,
@@ -104,6 +204,24 @@ class ChatState extends State<ChatScreen> with TickerProviderStateMixin {
       });
 
       message1.animationController.forward();
+    }
+    else {
+
+      ReceivedMessage message = ReceivedMessage(
+        name: event.snapshot.value["userName"],
+        photouri: event.snapshot.value["photoUri"],
+        text: event.snapshot.value["message"],
+        animationController: AnimationController(
+          duration: Duration(milliseconds: 700),
+          vsync: this,
+        ),
+      );
+
+      setState(() {
+        MyClass.messages.insert(0, message);
+      });
+
+      message.animationController.forward();
     }
   }
 
@@ -123,6 +241,7 @@ class ChatState extends State<ChatScreen> with TickerProviderStateMixin {
       print(e);
     }
 
+    //onMessageAdded.cancel();
     super.dispose();
   }
 
